@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid</title>
+  <style>
+    .grid-wrap {
+      background-image: url(./bg.png);
+      display: grid; 
+      grid-template-columns: 300px 1fr 1fr 1fr; 
+      grid-template-rows: 200px 200px 200px; 
+      gap: 20px 20px; 
+      /* grid-template-areas: 
+        ". . ."
+        ". . ."
+        ". . .";  */
+      /* justify-content: center; 
+      align-content: center; 
+      justify-items: center; 
+      align-items: center;  */
+      
+    }
+    .grid-item {
+      border-radius: 37px;
+      background-image: linear-gradient(133deg, #9FECCE 0%, #D1ABCB 48%, #BE86D0 76%, #BB65D5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-wrap">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+    <div class="grid-item">5</div>
+    <div class="grid-item">6</div>
+    <div class="grid-item">7</div>
+    <div class="grid-item">8</div>
+    <div class="grid-item">9</div>
+  </div>
+</body>
+</html>
