@@ -24,15 +24,13 @@ Hook API 概览：
 
 ## useState
 
-`useState` 可以为函数式组件添加状态。它会返回一个包含两个元素的数组：`[**当前状态值**, **可用于更新状态的函数**]`。
-
 语法：
 
 ```js
 const [state, setState] = useState(initialState)
 ```
 
-计数器示例：
+`useState` 可以为函数式组件添加状态。它会返回一个包含两个元素的数组：`[当前状态值, 可用于更新状态的函数]`。
 
 ```js
 import { useState } from 'react';
@@ -182,3 +180,81 @@ function Form() {
 ```
 
 ## useEffect
+
+语法：
+
+```js
+useEffect(setup, dependencies?)
+```
+
+`useEffect` 可以让你在函数式组件中执行副作用操作，例如获取数据、订阅、设置计时器等。
+
+使用 `useEffect` 的方式如下：
+
+```js
+import { useEffect } from 'react';
+
+function Example() {
+  useEffect(() => {
+    // 这里是副作用代码，例如获取数据、订阅或设置计时器
+  });
+
+  return (
+    // 组件的渲染内容
+  );
+}
+```
+
+在这个例子中，我们调用了 `useEffect` 钩子，并将一个匿名函数作为参数传递给它。这个匿名函数中的代码就是我们要执行的副作用。
+
+需要注意的是，`useEffect` 会在组件每次渲染后调用，所以你可能需要提供一个第二个参数来控制何时触发副作用。例如：
+
+```js
+import { useEffect, useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  // 这里的副作用只会在 count 改变时触发
+  useEffect(() => {
+    console.log(`Count is ${count}`);
+  }, [count]);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+```
+
+在这个例子中，我们提供了一个数组作为第二个参数，其中包含了要监听的变量（这里是 `count`）。这样，每当 `count` 改变时，才会触发副作用。
+
+如果你希望在组件卸载时清除副作用，可以返回一个清除函数。例如：
+
+```js
+import { useEffect, useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(count + 1);
+    }, 1000);
+
+    // 这里的函数会在组件卸载时调用，用于清除计时器
+    return () => clearInterval(interval);
+  });
+
+  return (
+    <div>
+      <p>The count is {count}</p>
+    </div>
+  );
+}
+```
