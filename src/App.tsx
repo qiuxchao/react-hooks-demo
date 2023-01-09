@@ -7,8 +7,8 @@ UseStateDemo
 function App() {
 
   return (
-    // <UseStateDemo />
-    <UseEffectDemo />
+    <UseStateDemo />
+    // <UseEffectDemo />
   )
 }
 
