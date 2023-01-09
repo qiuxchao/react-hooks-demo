@@ -1,5 +1,6 @@
 import UseEffectDemo from "./hookDemos/UseEffectDemo"
 import UseStateDemo from "./hookDemos/UseStateDemo"
+import UseContextDemo from "./hookDemos/UseContextDemo"
 
 
 UseStateDemo
@@ -7,8 +8,9 @@ UseStateDemo
 function App() {
 
   return (
-    <UseStateDemo />
+    // <UseStateDemo />
     // <UseEffectDemo />
+    <UseContextDemo />
   )
 }
 
