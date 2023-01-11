@@ -1,4 +1,4 @@
-# React Hook
+# React Hooks
 
 `Hook` 是 `React 16.8` 的新增特性。它可以让你在不编写 `class` 的情况下使用 `state` 以及其他的 React 特性。
 
@@ -273,7 +273,7 @@ const value = useContext(SomeContext)
 
 一个使用 `createContext`、`useContext`、`useState` 动态改变主题的例子：
 
-```js
+```ts
 import { useState, useContext, createContext, Component } from 'react';
 
 type ThemeType = 'light' | 'dark';
@@ -324,4 +324,20 @@ export default UseContextDemo
 
 上面的例子演示了在函数组件和类组件使用 Context 的方法，效果如下：
 
-![](./public/react_useContext_demo.gif)
+![react_useContext_demo](./public/react_useContext_demo.gif)
+
+## useReducer
+
+`useState` 的替代方案。它接收一个形如 `(state, action) => newState` 的 reducer，并返回当前的 state 以及与其配套的 `dispatch` 方法。（如果你熟悉 Redux 的话，就已经知道它如何工作了。）
+
+语法：
+
+```js
+const [state, dispatch] = useReducer(reducer, initialArg, init?)
+```
+
+参数：
+
+- `reducer`: reducer 函数，指定如何更新状态。它必须是纯粹的，应该以**状态**和**动作**(action)作为参数，并且应该返回下一个状态。状态和动作可以是任何类型。
+- `initialArg`：初始状态值。它可以是任何类型的值。如何计算初始状态取决于下一个 `init` 参数。
+- 可选 `init`：指定如何计算初始状态的初始化函数。如果未指定，则初始状态设置为 `initialArg`。否则，初始状态设置为 `init` 函数的调用结果 `init(initialArg)`。
