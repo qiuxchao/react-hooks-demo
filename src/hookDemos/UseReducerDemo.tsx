@@ -113,19 +113,6 @@ function AddTodo({ onAdd }: AddTodoPropsType) {
 }
 
 function TodoList({ todos, onChange, onDelete }: TodoListPropsType) {
-  const [editList, setEditList] = useState(todos.map(() => false))
-
-  const handleChange = (todo: TodoType, index: number) => {
-    editList[index] && onChange(todo)
-    editList[index] = !editList[index]
-    setEditList([...editList]);
-  }
-  const handleDelete = (id: TodoType['id'], index: number) => {
-    onDelete(id)
-    editList.splice(index, 1)
-    setEditList([...editList]);
-  }
-
   return <>
     {
       todos.map((todo) =>
