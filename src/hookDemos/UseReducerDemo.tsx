@@ -16,6 +16,7 @@ interface TodoListPropsType {
   onChange: (todo: TodoType) => void;
   onDelete: (id: TodoType['id']) => void
 }
+type TodoPropsType = Omit<TodoListPropsType, 'todos'> & {todo: TodoType}
 
 let todoId = 3;
 const initialTodos = [
@@ -99,7 +100,16 @@ function AddTodo({ onAdd }: AddTodoPropsType) {
     setTitle('');
   }
 
-  return <div className="flex"><input value={title} type="text" className='mr-4' onInput={(e: any) => setTitle(e.target.value)} /><button onClick={handleAdd}>添加</button></div>
+  return <div className="flex mb-6">
+    <input 
+      value={title} 
+      type="text" 
+      className='mr-4 px-2 py-1 leading-5 border rounded-md focus:outline-none focus:ring focus:border-blue-400' 
+      onInput={(e: any) => setTitle(e.target.value)} />
+      <button 
+        className='transition duration-700 ease-in-out transform hover:scale-125 bg-emerald-600 text-white py-1 px-3 rounded-md' 
+        onClick={handleAdd}>添加</button>
+    </div>
 }
 
 function TodoList({ todos, onChange, onDelete }: TodoListPropsType) {
@@ -110,19 +120,45 @@ function TodoList({ todos, onChange, onDelete }: TodoListPropsType) {
     editList[index] = !editList[index]
     setEditList([...editList]);
   }
-  const handleDelete = (id: TodoType['id']) => {
+  const handleDelete = (id: TodoType['id'], index: number) => {
     onDelete(id)
+    editList.splice(index, 1)
+    setEditList([...editList]);
   }
 
   return <>
     {
-      todos.map((todo, index) =>
-        <div key={todo.id} className="flex items-center">
-          <input type="checkbox" className='mr-4' checked={todo.done} onChange={(e: any) => todo.done = e.target.checked} />
-          {editList[index] ? <input type="text" value={todo.title} onInput={(e: any) => todo.title = e.target.value} /> : todo.title}
-          <button onClick={() => handleChange(todo, index)}>{editList[index] ? '保存' : '修改'}</button>
-          <button onClick={() => handleDelete(todo.id)}>删除</button>
-        </div>
+      todos.map((todo) =>
+        <Todo key={todo.id} todo={todo} onDelete={onDelete} onChange={onChange} />
       )}
   </>
+}
+
+function Todo({todo, onChange, onDelete }: TodoPropsType) {
+  const [isEdit, setIsEdit] = useState(false)
+
+  return <div className="flex items-center mb-2">
+          <div className="w-[134px]">
+            <input 
+              type="checkbox" 
+              className='mr-4 scale-150' 
+              checked={todo.done} 
+              onChange={(e: any) => onChange({...todo, done: e.target.checked})} />
+          {isEdit ? 
+            <input 
+              type="text" 
+              className='w-[100px] p-1 rounded-md border'
+              value={todo.title}
+              onInput={(e: any) => onChange({...todo, title: e.target.value})} /> : 
+            todo.title
+          }
+          </div>
+          <button 
+            className="ml-4 py-1 px-2 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 mr-2" 
+            onClick={() => setIsEdit(!isEdit)}>
+              {isEdit ? '保存' : '修改'}</button>
+          <button 
+            className="py-1 px-2 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75" 
+              onClick={() => onDelete(todo.id)}>删除</button>
+        </div>
 }
