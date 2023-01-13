@@ -347,6 +347,7 @@ const [state, dispatch] = useReducer(reducer, initialArg, init?)
 ```tsx
 import { useReducer, useState } from 'react'
 
+// 类型声明
 type TodoType = typeof initialTodos[number];
 type ActionType = 'add' | 'delete' | 'update'
 interface Action<T extends ActionType> {
@@ -365,6 +366,7 @@ interface TodoListPropsType {
 }
 type TodoPropsType = Omit<TodoListPropsType, 'todos'> & {todo: TodoType}
 
+// 初始状态
 let todoId = 3;
 const initialTodos = [
   {
