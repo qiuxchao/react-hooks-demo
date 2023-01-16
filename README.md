@@ -24,13 +24,20 @@ Hook API 概览：
 
 ## useState
 
+`useState` 可以为函数式组件添加状态。它会返回一个包含两个元素的数组：`[当前状态值, 可用于更新状态的函数]`。
+
 语法：
 
 ```js
 const [state, setState] = useState(initialState)
 ```
 
-`useState` 可以为函数式组件添加状态。它会返回一个包含两个元素的数组：`[当前状态值, 可用于更新状态的函数]`。
+参数：
+
+- `initialState`：状态的初始值。它可以是任何类型的值，但函数有特殊的行为。这个参数在初始渲染后被忽略。
+  - 如果将函数作为 `initialState` 传递给 `useState`，它将被视为初始化函数。它应该是纯的，不带任何参数，并且应该返回任何类型的值。React 在初始化组件时会调用初始化函数，并将其返回值存储为初始状态。
+
+示例：
 
 ```js
 import { useState } from 'react';
@@ -181,13 +188,18 @@ function Form() {
 
 ## useEffect
 
+`useEffect` 可以让你在函数式组件中执行副作用操作，例如获取数据、订阅、设置计时器等。
+
 语法：
 
 ```js
 useEffect(setup, dependencies?)
 ```
 
-`useEffect` 可以让你在函数式组件中执行副作用操作，例如获取数据、订阅、设置计时器等。
+参数：
+
+- `setup`：这是一个函数，它在组件第一次渲染和之后的每次更新时都会调用。这个函数可以返回一个清除函数，用来在组件卸载时执行一些清理操作。
+- `dependencies`: 这是一个数组，用来表示 `setup` 依赖的所有反应值（包括 `props`、`state` 以及直接在组件主体内声明的所有变量和函数）的列表。当这些值改变时，`setup` 函数会再次被调用。如果省略这个参数，`setup` 函数将在每次渲染时都被调用。
 
 使用 `useEffect` 的方式如下：
 
@@ -260,6 +272,8 @@ function Example() {
 ```
 
 ## useContext
+
+`useContext` 可以让组件能够直接访问上下文（参见 [React Context](https://zh-hans.reactjs.org/docs/context.html#reactcreatecontext)）并获取数据。这可以让组件的结构更加清晰和简洁。
 
 语法：
 
