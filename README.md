@@ -199,7 +199,7 @@ useEffect(setup, dependencies?)
 参数：
 
 - `setup`：这是一个函数，它在组件第一次渲染和之后的每次更新时都会调用。这个函数可以返回一个清除函数，用来在组件卸载时执行一些清理操作。
-- `dependencies`: 这是一个数组，用来表示 `setup` 依赖的所有反应值（包括 `props`、`state` 以及直接在组件主体内声明的所有变量和函数）的列表。当这些值改变时，`setup` 函数会再次被调用。如果省略这个参数，`setup` 函数将在每次渲染时都被调用。
+- `dependencies`: 这是一个数组，用来表示 `setup` 依赖的所有反应值（`props`、`state`）列表。当这些值改变时，`setup` 函数会再次被调用。如果省略这个参数，`setup` 函数将在每次渲染时都被调用。
 
 使用 `useEffect` 的方式如下：
 
@@ -270,6 +270,51 @@ function Example() {
   );
 }
 ```
+
+::: warning
+在 `useEffect` 的依赖数组中可以包含任何值，包括 `state` 和 `props`，也可以包含其他变量。但是，如果这个变量不是 `state` 或 `props`，则 React 不会自动检测其变化，因此在变量变化时 `useEffect` 不会重新运行。
+
+查看如下示例：
+
+```js
+let x = 0;
+
+useEffect(() => {
+  console.log(x);
+}, [x]);
+
+const handleChangeX = () => {
+  x++;
+};
+```
+
+当我们通过点击事件触发 `handleChangeX` 方法改变 `x` 时，并不会被 `useEffect` 检测到，因此也不会打印最新的 `x` 的值。这是因为：`x` 是一个普通的变量，而不是 `state`。React 不会自动检测普通变量的变化，因此 `useEffect` 的依赖数组中的 `x` 值不会发生变化。
+
+为了使用Effect监听非 `state` 和 `props` 变量的变化，我们需要在变量变化时手动触发组件重新渲染。
+
+简而言之，可以在依赖数组中放入非 `state` 和 `props` 变量，但是需要在变量变化时手动触发组件重新渲染。
+
+例如：
+
+```js
+const [state, setState] = useState({ x: 0 });
+const x = state.x;
+
+useEffect(() => {
+    console.log(x);
+}, [x]);
+
+const handleChangeX = () => {
+  setState(prevState => {
+    return { x: prevState.x + 1 }
+  });
+};
+
+```
+
+这样在点击事件中使用 `setState` 就能触发组件重新渲染，使 `useEffect` 监听到 `x` 变化，重新运行。但这样做没有意义，因为我们可以直接使用 `state.x`。
+
+:::
 
 ## useContext
 
